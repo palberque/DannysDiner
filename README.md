@@ -160,12 +160,12 @@ Query result
 ```sql
 	select customer_id, product_name
 	from 
-							-- subquery as we only want to return specific columns. This also could be done using a CTE 
+			-- subquery as we only want to return specific columns. This also could be done using a CTE 
 	(SELECT 
 		s.customer_id, 
 		s.order_date, 
 		m.product_name,
-							-- windows function to rank orders. The number restarts when  the column(s) we partition by change.
+			-- windows function to rank orders. The number restarts when  the column(s) we partition by change.
 		ROW_NUMBER() OVER (PARTITION BY s.customer_id ORDER BY s.customer_id, s.order_date) order_ranking
 	FROM 
 		sales s
