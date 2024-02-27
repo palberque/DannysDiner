@@ -27,6 +27,7 @@ Danny has shared with you 3 key datasets for this case study:
 
 ## Entity Relationship Diagram
 
+![Table Structure](./images/Table_Structure.png)
 
 
 ## Datasets
@@ -35,13 +36,20 @@ Danny has shared with you 3 key datasets for this case study:
 
 The  `sales`  table captures all  `customer_id`  level purchases with an corresponding  `order_date`  and  `product_id`  information for when and what menu items were ordered.
 
+![Table Structure](./images/Sales_Table.png)
+
 ### Table 2: menu
 
 The  `menu`  table maps the  `product_id`  to the actual  `product_name`  and  `price`  of each menu item.
 
+![Table Structure](./images/Menu_Table.png)
+
 ### Table 3: members
 
 The final  `members`  table captures the  `join_date`  when a  `customer_id`  joined the beta version of the Danny’s Diner loyalty program.
+
+![Table Structure](./images/Members_Table.png)
+
 
 ## Database and table creation
 
