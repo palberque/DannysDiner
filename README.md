@@ -1,9 +1,9 @@
 # Danny's Diner
 Danny's Diner - week 1 project for #8WeekSQLChallenge
 
+Thank you to Data With Danny for providing real world problems to solve using SQL. This exercise is still in process and I will by posting on linkedin and hosting on my github portfolio once completed     
 
-
-
+https://8weeksqlchallenge.com/case-study-1/
 
 ## Introduction
 
@@ -126,17 +126,17 @@ VALUES
 ### 1) What is the total amount each customer spent at the restaurant?
 
 ```sql
-SELECT
-    s.customer_id,
-    SUM(m.price) AS total_spent
-FROM
-    sales s
-LEFT JOIN
-    menu m ON s.product_id = m.product_id
-GROUP BY
-    s.customer_id;
+	SELECT
+	s.customer_id,
+	    SUM(m.price) AS total_spent
+	FROM
+	    sales s
+	LEFT JOIN
+	    menu m ON s.product_id = m.product_id
+	GROUP BY
+	    s.customer_id;
 ```
-Query Result
+**Query Result**
 
 ![Answer](./images/a1.png)
 
@@ -152,14 +152,15 @@ Query Result
 	;
 ```
 
-Query result
+**Query result**
+
 ![Answer](./images/a2.png)
 
 ### 3) What was the first item from the menu purchased by each customer?
 
 ```sql
-	select customer_id, product_name
-	from 
+	SELECT customer_id, product_name
+	FROM 
 			-- subquery as we only want to return specific columns. This also could be done using a CTE 
 	(SELECT 
 		s.customer_id, 
@@ -177,7 +178,8 @@ Query result
 	;
 ```
 
-Query Result
+**Query Result**
+
 ![Answer](./images/a3.png)
 
 ### 4) What is the most purchased item on the menu and how many times was it purchased by all customers?
