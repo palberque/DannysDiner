@@ -136,7 +136,7 @@ LEFT JOIN
 GROUP BY
     s.customer_id;
 ```
-Result
+Query Result
 
 ![Answer](./images/a1.png)
 
@@ -144,14 +144,41 @@ Result
 ### 2) How many days has each customer visited the restaurant?
 
 ```sql
--- Code to be entered here once i commplete the exercise
+	SELECT 
+		customer_id, COUNT(DISTINCT order_date) AS order_count
+	FROM
+		sales
+	GROUP BY customer_id
+	;
 ```
+
+Query result
+![Answer](./images/a2.png)
 
 ### 3) What was the first item from the menu purchased by each customer?
 
 ```sql
--- Code to be entered here once i commplete the exercise
+	select customer_id, product_name
+	from 
+							-- subquery as we only want to return specific columns. This also could be done using a CTE 
+	(SELECT 
+		s.customer_id, 
+		s.order_date, 
+		m.product_name,
+							-- windows function to rank orders. The number restarts when  the column(s) we partition by change.
+		ROW_NUMBER() OVER (PARTITION BY s.customer_id ORDER BY s.customer_id, s.order_date) order_ranking
+	FROM 
+		sales s
+	JOIN 
+		menu m ON s.product_id = m.product_id
+	) AS ranked_orders
+
+	WHERE order_ranking = 1 
+	;
 ```
+
+Query Result
+![Answer](./images/a3.png)
 
 ### 4) What is the most purchased item on the menu and how many times was it purchased by all customers?
 
