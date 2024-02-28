@@ -1,7 +1,7 @@
 # Danny's Diner
 Danny's Diner is the first week project for the  #8WeekSQLChallenge
 
-Thank you to Data With Danny for providing examples of  real world problems to solve using SQL. This exercise is still in process and I will by posting on linkedin and hosting on my github portfolio once completed.     
+Thank you to Data With Danny for providing examples of real world problems to solve using SQL. This exercise is still in process and I will be posting on LinkedIn and hosting on my github portfolio once completed.     
 
 The 8 week challenge is free of charge for anyone who wishes to attempt
 https://8weeksqlchallenge.com/case-study-1/
@@ -12,7 +12,7 @@ Danny seriously loves Japanese food so in the beginning of 2021, he decides to e
 
 Danny’s Diner is in need of your assistance to help the restaurant stay afloat - the restaurant has captured some very basic data from their few months of operation but have no idea how to use their data to help them run the business.
 
-## Probem Statement
+## Problem Statement
 
 Danny wants to use the data to answer a few simple questions about his customers, especially about their visiting patterns, how much money they’ve spent and also which menu items are their favourite. Having this deeper connection with his customers will help him deliver a better and more personalised experience for his loyal customers.
 
