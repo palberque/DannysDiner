@@ -237,26 +237,153 @@ WHERE
 ### 6) Which item was purchased first by the customer after they became a member?
 
 ```sql
--- Code to be entered here once i commplete the exercise
+WITH cte_customer_order AS (
+    SELECT 
+        mbr.customer_id,
+        mbr.join_date,
+        s.order_date,
+        s.product_id,
+        m.product_name,
+        RANK() OVER (PARTITION BY s.customer_id ORDER BY order_date) AS order_rank
+    FROM 
+        members mbr
+    RIGHT JOIN 
+        sales s ON mbr.customer_id = s.customer_id -- Right join to exclude customers that are not a member
+    LEFT JOIN 
+        menu m ON s.product_id = m.product_id
+    WHERE 
+        mbr.customer_id IS NOT NULL 
+        AND s.order_date > mbr.join_date
+    ORDER BY 
+        customer_id, s.order_date ASC
+)
+
+SELECT 
+    customer_id, 
+    product_name
+FROM 
+    cte_customer_order
+WHERE 
+    order_rank = 1;
+
+
 ```
+
+**Query Result**
+
+![Answer](./images/a6.png)
 
 ### 7) Which item was purchased just before the customer became a member?
 
 ```sql
--- Code to be entered here once i commplete the exercise
+WITH cte_customer_order AS (
+    SELECT 
+        mbr.customer_id,
+        mbr.join_date,
+        s.order_date,
+        s.product_id,
+        m.product_name,
+        RANK() OVER (PARTITION BY s.customer_id ORDER BY order_date DESC) AS order_rank
+    FROM 
+        members mbr
+    RIGHT JOIN 
+        sales s ON mbr.customer_id = s.customer_id -- Right join to exclude customers that are not a member
+    LEFT JOIN 
+        menu m ON s.product_id = m.product_id
+    WHERE 
+        mbr.customer_id IS NOT NULL 
+        AND s.order_date < mbr.join_date
+    ORDER BY 
+        customer_id, s.order_date DESC
+)
+
+SELECT 
+    customer_id, 
+    product_name
+FROM 
+    cte_customer_order
+WHERE 
+    order_rank = 1;
+
+
 ```
+
+**Query Result**
+
+![Answer](./images/a7.png)
 
 ### 8) What is the total items and amount spent for each member before they became a member?
 
 ```sql
--- Code to be entered here once i commplete the exercise
+WITH cte_customer_order AS (
+    SELECT 
+        mbr.customer_id,
+        mbr.join_date,
+        s.order_date,
+        s.product_id,
+        m.product_name,
+        m.price,
+        RANK() OVER (PARTITION BY s.customer_id ORDER BY order_date DESC) AS order_rank
+    FROM 
+        members mbr
+    RIGHT JOIN 
+        sales s ON mbr.customer_id = s.customer_id -- Right join to exclude customers that are not a member
+    LEFT JOIN 
+        menu m ON s.product_id = m.product_id
+    WHERE 
+        mbr.customer_id IS NOT NULL 
+        AND s.order_date < mbr.join_date
+    ORDER BY 
+        customer_id, s.order_date DESC
+)
+
+SELECT 
+    customer_id, 
+    COUNT(product_id) AS count_items,
+    SUM(price) AS amount_spent
+FROM 
+    cte_customer_order
+WHERE 
+    order_rank = 1
+GROUP BY 
+    customer_id;
+
 ```
+
+**Query Result**
+
+![Answer](./images/a8.png)
 
 ### 9) If each $1 spent equates to 10 points and sushi has a 2x points multiplier - how many points would each customer have?
 
 ```sql
--- Code to be entered here once i commplete the exercise
+    SELECT 
+        mbr.customer_id,
+        SUM(
+            CASE
+                WHEN m.product_name = 'sushi' THEN (price * 10) * 2
+                ELSE price * 10
+            END
+        ) AS points_earned
+    FROM 
+        members mbr
+    INNER JOIN 
+        sales s ON mbr.customer_id = s.customer_id
+    LEFT JOIN 
+        menu m ON s.product_id = m.product_id
+    WHERE 
+        mbr.customer_id IS NOT NULL 
+        AND s.order_date > mbr.join_date
+    GROUP BY 
+        customer_id
+    ORDER BY 
+        customer_id;
 ```
+
+
+**Query Result**
+
+![Answer](./images/a9.png)
 
 ### 10) In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi - how many points do customer A and B have at the end of January?
 
