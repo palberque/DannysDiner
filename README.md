@@ -54,7 +54,7 @@ The final  `members`  table captures the  `join_date`  when a  `customer_id`  jo
 ## Database and table creation
 
 ```sql
----- 1) Start by creating the database
+-- 1) Start by creating the database
 
 CREATE SCHEMA dannys_diner;
 use dannys_diner;
@@ -86,7 +86,7 @@ CREATE TABLE menu (
 );
 
 
----- 3) Inserting the data into the previously created tables.
+-- 3) Inserting the data into the previously created tables.
 
 INSERT INTO sales
   (`customer_id`, `order_date`, `product_id`)
@@ -185,14 +185,50 @@ VALUES
 ### 4) What is the most purchased item on the menu and how many times was it purchased by all customers?
 
 ```sql
--- Code to be entered here once i commplete the exercise
+SELECT 
+    m.product_name, COUNT(product_name) AS times_ordered
+FROM
+    sales s
+        LEFT JOIN
+    menu m ON s.product_id = m.product_id
+GROUP BY product_name
+ORDER BY COUNT(product_name) DESC
+;
 ```
+
+**Query Result**
+
+![Answer](./images/a4.png)
 
 ### 5) Which item was the most popular for each customer?
 
 ```sql
--- Code to be entered here once i commplete the exercise
+WITH cte_customer_order AS (
+    SELECT 
+        s.customer_id,
+        m.product_name, 
+        COUNT(product_name) AS times_ordered,
+        RANK() OVER (PARTITION BY s.customer_id ORDER BY COUNT(product_name) DESC) AS order_rank
+    FROM
+        sales s
+    INNER JOIN
+        menu m ON s.product_id = m.product_id
+    GROUP BY 
+        s.customer_id, m.product_name
+)
+
+SELECT 
+    customer_id, product_name, times_ordered
+FROM
+    cte_customer_order
+WHERE
+    order_rank = 1;
+
 ```
+
+**Query Result**
+
+![Answer](./images/a5.png)
 
 ### 6) Which item was purchased first by the customer after they became a member?
 
