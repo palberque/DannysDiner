@@ -1,8 +1,9 @@
 # Danny's Diner
-Danny's Diner - week 1 project for #8WeekSQLChallenge
+Danny's Diner is the first week project for the  #8WeekSQLChallenge
 
-Thank you to Data With Danny for providing real world problems to solve using SQL. This exercise is still in process and I will by posting on linkedin and hosting on my github portfolio once completed     
+Thank you to Data With Danny for providing examples of  real world problems to solve using SQL. This exercise is still in process and I will by posting on linkedin and hosting on my github portfolio once completed.     
 
+The 8 week challenge is free of charge for anyone who wishes to attempt
 https://8weeksqlchallenge.com/case-study-1/
 
 ## Introduction
@@ -52,6 +53,9 @@ The final  `members`  table captures the  `join_date`  when a  `customer_id`  jo
 
 
 ## Database and table creation
+
+The orginal script to create the tables and load data was written for PostgreSQL. I converted it to MySQL format with assistance with   
+
 
 ```sql
 -- 1) Start by creating the database
