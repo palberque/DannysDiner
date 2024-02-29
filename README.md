@@ -132,7 +132,7 @@ VALUES
 
 ```sql
 	SELECT
-	s.customer_id,
+            s.customer_id,
 	    SUM(m.price) AS total_spent
 	FROM
 	    sales s
