@@ -151,7 +151,8 @@ VALUES
 
 ```sql
 	SELECT 
-		customer_id, COUNT(DISTINCT order_date) AS order_count
+		customer_id,
+		COUNT(DISTINCT order_date) AS order_count 
 	FROM
 		sales
 	GROUP BY customer_id
@@ -169,7 +170,14 @@ VALUES
 ```sql
 	SELECT customer_id, product_name
 	FROM 
-			-- subquery as we only want to return specific columns. This also could be done using a CTE 
+		/* A subquery is needed due to order of execution. 
+		   In SQL while the SELECT statement is written first,
+		   FROM, WHERE, GROUP BY and HAVING statements execute first. 
+		   In order to filter based on the new column order_ranking
+           it needs to be defined in a subquery or Common Tabe Expression (CTE).
+		   This allows a select statement to be executed during the WHERE statement
+		   Going forward, I will be using CTE's as I find they are easier to read. 
+		*/
 	(SELECT 
 		s.customer_id, 
 		s.order_date, 
@@ -257,8 +265,8 @@ WITH cte_customer_order AS (
         RANK() OVER (PARTITION BY s.customer_id ORDER BY order_date) AS order_rank
     FROM 
         members mbr
-    RIGHT JOIN 
-        sales s ON mbr.customer_id = s.customer_id -- Right join to exclude customers that are not a member
+    INNER JOIN 
+        sales s ON mbr.customer_id = s.customer_id -- inner join to exclude customers that are not a member
     LEFT JOIN 
         menu m ON s.product_id = m.product_id
     WHERE 
@@ -298,8 +306,8 @@ WITH cte_customer_order AS (
         RANK() OVER (PARTITION BY s.customer_id ORDER BY order_date DESC) AS order_rank
     FROM 
         members mbr
-    RIGHT JOIN 
-        sales s ON mbr.customer_id = s.customer_id -- Right join to exclude customers that are not a member
+    INNER JOIN 
+        sales s ON mbr.customer_id = s.customer_id -- inner join to exclude customers that are not a member
     LEFT JOIN 
         menu m ON s.product_id = m.product_id
     WHERE 
@@ -396,7 +404,7 @@ WHERE
             CASE
                 WHEN DATEDIFF(s.order_date, mbr.join_date) <= 7 THEN  m.price * 20 -- Orders within 7 days of join date get double points
                 WHEN m.product_name = 'sushi' THEN (price * 10) * 2 -- Sushi is always double points 
-                ELSE m.price * 10 -- All other prurcahses get 10 points per dollar
+                ELSE m.price * 10 -- All other purchases get 10 points per dollar
             END
         ) AS points_earned
     FROM 
