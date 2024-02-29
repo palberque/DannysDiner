@@ -434,16 +434,22 @@ An export of these queries could be useful to create a sales dashboard in PowerB
 
 ### 11) Recreate the following table output using the available data:
 ```sql
-select s.customer_id, s.order_date, m.product_name, m.price,
-CASE
-WHEN order_date >= join_date THEN 'Y'
-ELSE 'N'
-END AS is_member
-from sales s
-LEFT JOIN menu m on s.product_id = m.product_id
-left join members mbr on s.customer_id = mbr.customer_id
-order by s.customer_id, s.order_date
-;
+SELECT
+  s.customer_id,
+  s.order_date,
+  m.product_name,
+  m.price,
+  CASE
+    WHEN s.order_date >= mbr.join_date THEN 'Y'
+    ELSE 'N'
+  END AS is_member
+FROM
+  sales s
+  LEFT JOIN menu m ON s.product_id = m.product_id
+  LEFT JOIN members mbr ON s.customer_id = mbr.customer_id
+ORDER BY
+  s.customer_id,
+  s.order_date;
 ```
 
 **Query Result**
@@ -455,22 +461,31 @@ order by s.customer_id, s.order_date
 
 ```sql
 WITH cte_all_orders AS (
-select s.customer_id, s.order_date, m.product_name, m.price,
-CASE
-WHEN order_date >= join_date THEN 'Y'
-ELSE 'N'
-END AS is_member
-
-from sales s
-LEFT JOIN menu m on s.product_id = m.product_id
-left join members mbr on s.customer_id = mbr.customer_id
+    SELECT 
+        s.customer_id, 
+        s.order_date, 
+        m.product_name, 
+        m.price,
+        CASE
+            WHEN order_date >= join_date THEN 'Y'
+            ELSE 'N'
+        END AS is_member
+    FROM sales s
+    LEFT JOIN menu m ON s.product_id = m.product_id
+    LEFT JOIN members mbr ON s.customer_id = mbr.customer_id
 )
 
-select *,
-CASE
-        WHEN is_member = 'Y' THEN RANK() OVER (PARTITION BY customer_id, is_member ORDER BY order_date)
+SELECT 
+    *,
+    CASE
+        WHEN is_member = 'Y' 
+        THEN RANK() OVER (
+            PARTITION BY customer_id, is_member 
+            ORDER BY order_date
+        )
     END AS ranking
-from cte_all_orders
+FROM cte_all_orders;
+
 ```
 
 **Query Result**
