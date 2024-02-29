@@ -146,6 +146,7 @@ VALUES
 ![Answer](./images/a1.png)
 
 
+
 ### 2) How many days has each customer visited the restaurant?
 
 ```sql
@@ -160,6 +161,8 @@ VALUES
 **Query result**
 
 ![Answer](./images/a2.png)
+
+
 
 ### 3) What was the first item from the menu purchased by each customer?
 
@@ -187,6 +190,8 @@ VALUES
 
 ![Answer](./images/a3.png)
 
+
+
 ### 4) What is the most purchased item on the menu and how many times was it purchased by all customers?
 
 ```sql
@@ -204,6 +209,8 @@ ORDER BY COUNT(product_name) DESC
 **Query Result**
 
 ![Answer](./images/a4.png)
+
+
 
 ### 5) Which item was the most popular for each customer?
 
@@ -234,6 +241,8 @@ WHERE
 **Query Result**
 
 ![Answer](./images/a5.png)
+
+
 
 ### 6) Which item was purchased first by the customer after they became a member?
 
@@ -274,6 +283,8 @@ WHERE
 
 ![Answer](./images/a6.png)
 
+
+
 ### 7) Which item was purchased just before the customer became a member?
 
 ```sql
@@ -313,6 +324,8 @@ WHERE
 
 ![Answer](./images/a7.png)
 
+
+
 ### 8) What is the total items and amount spent for each member before they became a member?
 
 ```sql
@@ -339,6 +352,8 @@ WHERE
 **Query Result**
 
 ![Answer](./images/a8.png)
+
+
 
 ### 9) If each $1 spent equates to 10 points and sushi has a 2x points multiplier - how many points would each customer have?
 
@@ -370,8 +385,35 @@ WHERE
 
 ![Answer](./images/a9.png)
 
+
+
 ### 10) In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi - how many points do customer A and B have at the end of January?
 
 ```sql
--- Code to be entered here once i commplete the exercise
+    SELECT 
+        mbr.customer_id,
+        SUM(
+            CASE
+                WHEN DATEDIFF(s.order_date, mbr.join_date) <= 7 THEN  m.price * 20 -- Orders within 7 days of join date get double points
+                WHEN m.product_name = 'sushi' THEN (price * 10) * 2 -- Sushi is always double points 
+                ELSE m.price * 10 -- All other prurcahses get 10 points per dollar
+            END
+        ) AS points_earned
+    FROM 
+        members mbr
+    INNER JOIN 
+        sales s ON mbr.customer_id = s.customer_id
+    LEFT JOIN 
+        menu m ON s.product_id = m.product_id
+    WHERE 
+       s.order_date >= mbr.join_date -- We only count purchases on or after join date
+       AND s.order_date < '2021-02-01'-- Promo ends in January
+    GROUP BY 
+        customer_id
+    ORDER BY 
+        customer_id;
 ```
+
+**Query Result**
+
+![Answer](./images/a10.png)
