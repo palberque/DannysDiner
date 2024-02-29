@@ -175,7 +175,7 @@ VALUES
 		s.order_date, 
 		m.product_name,
 			-- windows function to rank orders. The number restarts when  the column(s) we partition by change.
-		ROW_NUMBER() OVER (PARTITION BY s.customer_id ORDER BY s.customer_id, s.order_date) order_ranking
+		ROW_NUMBER() OVER (PARTITION BY s.customer_id ORDER BY s.order_date) order_ranking
 	FROM 
 		sales s
 	JOIN 
