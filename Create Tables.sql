@@ -1,10 +1,10 @@
----- Start by creating the database
+---- 1) Start by creating the database
 
 CREATE SCHEMA dannys_diner;
 use dannys_diner;
 
 
--- We are starting fresh by droping the tables if they already exist priort to creation of the new table
+---- 2) We are starting fresh by droping the tables if they already exist priort to creation of the new table
 
 Drop Table if exists sales;
 
@@ -30,7 +30,7 @@ CREATE TABLE menu (
 );
 
 
----- Inserting the data into the previously crates tables.
+---- 3) Inserting the data into the previously crates tables.
 
 INSERT INTO sales
   (`customer_id`, `order_date`, `product_id`)
