@@ -316,38 +316,23 @@ WHERE
 ### 8) What is the total items and amount spent for each member before they became a member?
 
 ```sql
-WITH cte_customer_order AS (
     SELECT 
         mbr.customer_id,
-        mbr.join_date,
-        s.order_date,
-        s.product_id,
-        m.product_name,
-        m.price,
-        RANK() OVER (PARTITION BY s.customer_id ORDER BY order_date DESC) AS order_rank
+        count(s.product_id) as count_of_products,
+        sum(m.price) as total_spent
     FROM 
         members mbr
-    RIGHT JOIN 
-        sales s ON mbr.customer_id = s.customer_id -- Right join to exclude customers that are not a member
+    INNER JOIN 
+        sales s ON mbr.customer_id = s.customer_id -- Inner join to exclude customers that are not a member
     LEFT JOIN 
         menu m ON s.product_id = m.product_id
-    WHERE 
-        mbr.customer_id IS NOT NULL 
-        AND s.order_date < mbr.join_date
+    WHERE
+        s.order_date < mbr.join_date
+    GROUP BY
+		mbr.customer_id
     ORDER BY 
-        customer_id, s.order_date DESC
-)
-
-SELECT 
-    customer_id, 
-    COUNT(product_id) AS count_items,
-    SUM(price) AS amount_spent
-FROM 
-    cte_customer_order
-WHERE 
-    order_rank = 1
-GROUP BY 
-    customer_id;
+        customer_id
+	;
 
 ```
 
