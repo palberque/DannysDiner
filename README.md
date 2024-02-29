@@ -171,10 +171,10 @@ VALUES
 	SELECT customer_id, product_name
 	FROM 
 		/* A subquery is needed due to order of execution. 
-		   In SQL while the SELECT statement is written first,
+		   In SQL although the SELECT statement is written first,
 		   FROM, WHERE, GROUP BY and HAVING statements execute first. 
-		   In order to filter based on the new column order_ranking
-           it needs to be defined in a subquery or Common Tabe Expression (CTE).
+		   In order to filter based on the new column order_ranking,
+                   it needs to be defined in a subquery or Common Tabe Expression (CTE).
 		   This allows a select statement to be executed during the WHERE statement
 		   Going forward, I will be using CTE's as I find they are easier to read. 
 		*/
@@ -425,3 +425,54 @@ WHERE
 **Query Result**
 
 ![Answer](./images/a10.png)
+
+
+## Bonus questions
+
+The following questions are related creating basic data tables that Danny and his team can use to quickly derive insights without needing to join the underlying tables using SQL.
+An export of these queries could be useful to create a sales dashboard in PowerBi or Tableau
+
+### 11) Recreate the following table output using the available data:
+```sql
+select s.customer_id, s.order_date, m.product_name, m.price,
+CASE
+WHEN order_date >= join_date THEN 'Y'
+ELSE 'N'
+END AS is_member
+from sales s
+LEFT JOIN menu m on s.product_id = m.product_id
+left join members mbr on s.customer_id = mbr.customer_id
+order by s.customer_id, s.order_date
+;
+```
+
+**Query Result**
+
+![Answer](./images/a11.png)
+
+
+### 12) Danny also requires further information about the ranking of customer products, but he purposely does not need the ranking for non-member purchases so he expects null ranking values for the records when customers are not yet part of the loyalty program.
+
+```sql
+WITH cte_all_orders AS (
+select s.customer_id, s.order_date, m.product_name, m.price,
+CASE
+WHEN order_date >= join_date THEN 'Y'
+ELSE 'N'
+END AS is_member
+
+from sales s
+LEFT JOIN menu m on s.product_id = m.product_id
+left join members mbr on s.customer_id = mbr.customer_id
+)
+
+select *,
+CASE
+        WHEN is_member = 'Y' THEN RANK() OVER (PARTITION BY customer_id, is_member ORDER BY order_date)
+    END AS ranking
+from cte_all_orders
+```
+
+**Query Result**
+
+![Answer](./images/a12.png)
