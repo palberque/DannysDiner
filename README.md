@@ -347,8 +347,8 @@ WHERE
         mbr.customer_id,
         SUM(
             CASE
-                WHEN m.product_name = 'sushi' THEN (price * 10) * 2
-                ELSE price * 10
+                WHEN m.product_name = 'sushi' THEN (price * 10) * 2 -- double points for sushi
+                ELSE m.price * 10 -- regular points for all other products
             END
         ) AS points_earned
     FROM 
@@ -358,8 +358,7 @@ WHERE
     LEFT JOIN 
         menu m ON s.product_id = m.product_id
     WHERE 
-        mbr.customer_id IS NOT NULL 
-        AND s.order_date > mbr.join_date
+       s.order_date >= mbr.join_date -- We only count purchases on or after join date
     GROUP BY 
         customer_id
     ORDER BY 
