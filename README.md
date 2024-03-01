@@ -1,11 +1,33 @@
 # Danny's Diner
-Danny's Diner is the first week project for the  #8WeekSQLChallenge
+### It’s time to get Serious with SQL.
 
-Thank you to Data With Danny for providing examples of real world problems to solve using SQL. This exercise is still in process and I will be posting on LinkedIn and hosting on my github portfolio once completed.     
+As part of my journey to deepen my SQL skills, I have embarked on Danny Ma's #8WeekSQLChallenge. 
+It's a set of 8 hands-on self-directed projects aimed at applying and enhancing data analysis skills. 
+I learned over the last few weeks that it’s important to have a portfolio to showcase my skills to any potential employers. This will allow me to accomplish that goal.
+I really enjoyed this project and learned a lot more than just SQL. I look forward to completing more projects which I will share on LinkedIn. 
 
-The 8 week challenge is free of charge for anyone who wishes to attempt
+Tools/Resources used:  
 
+ - MySQL Workbench was the database engine and IDE of choice.
+ - GitHub was used to document the process and store source code.
+ - StackEdit is a free tool to write Markdown code which is used to present data in GitHub.
+ - PowerPoint for the final presentation. This was my first time creating a presentation.
+ - ChatGPT 4 was a great source for automated code debugging and beautification of code for readability.
+ - DALL-E 3 generated the mouthwatering food images used in the presentation.
+
+Functions used:  
+
+- Aggregate functions (SUM, COUNT, GROUP BY)
+- Joins (LEFT, INNER)
+- Subqueries
+- Common Table Expressions (CTE)  
+- Window functions (RANK, ROW_NUMBER) 
+- Date Functions (DATEDIFF) 
+- Case Statements
+
+Challenge Link: 
 https://8weeksqlchallenge.com/case-study-1/
+
 
 ## Introduction
 
@@ -495,3 +517,6 @@ FROM cte_all_orders;
 **Query Result**
 
 ![Answer](./images/a12.png)
+
+
+> Written with [StackEdit](https://stackedit.io/).
